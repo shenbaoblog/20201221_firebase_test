@@ -126,6 +126,32 @@ function App() {
   };
 
   // ------------------------------------------
+  // データを削除するボタン
+  // ------------------------------------------
+  const handleClickDeleteButton = async () => {
+    if (!documentId) {
+      alert('documentIdをセットしてください');
+      return;
+    }
+
+    try {
+      const db = firebase.firestore();
+      await db.collection('users').doc(documentId).delete();
+      setUserName('');
+      setAge('');
+      setDocumentId('');
+    } catch (error) {
+      console.log(error);
+    }
+    // const db = firebase.firestore();
+    // db.collection("users").doc("1").delete().then(function() {
+    //   console.log("Document successfully deleted!");
+    // }).catch(function(error) {
+    //     console.error("Error removing document: ", error);
+    // });
+  }
+
+  // ------------------------------------------
   // リスト表示
   // ------------------------------------------
   let userListItems = users.map((user) => {
@@ -171,6 +197,7 @@ function App() {
       <button onClick={handleClickFetchButton}>取得</button>
       <button onClick={handleClickAddButton}>追加</button>
       <button onClick={handleClickUpdateButton}>更新</button>
+      <button onClick={handleClickDeleteButton}>削除</button>
       <ul>{userListItems}</ul>
     </div>
   );
